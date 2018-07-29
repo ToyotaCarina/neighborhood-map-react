@@ -8,6 +8,7 @@ class App extends Component {
   constructor() {
     super();
     // this.map;
+    this.infowindow;
     this.initMap = this.initMap.bind(this);
     this.createMarkers = this.createMarkers.bind(this);
     this.geocodeCity = this.geocodeCity.bind(this);
@@ -79,6 +80,7 @@ class App extends Component {
     let self = this;
     var requestGeocode = {'address': this.state.cityName};
     var geocoder = new window.google.maps.Geocoder();
+    this.infowindow = new window.google.maps.InfoWindow({});
     geocoder.geocode(requestGeocode, this.geocodeCallback.bind(this));
   }
 
@@ -174,8 +176,12 @@ createMarkers(places) {
       });
       // self.state.markers.concat(marker);
       self.addPlace(place, marker);
-      // console.log(place);
-      // console.log(marker);
+      console.log(place);
+      console.log(marker);
+      marker.addListener('click', function() {
+        self.populateInfoWindow(this);
+      });
+
       bounds.extend(place.geometry.location);
     }
 
@@ -183,10 +189,41 @@ createMarkers(places) {
   self.map.fitBounds(bounds);
 }
 
-  showSettings (event) {
-  event.preventDefault();
+  populateInfoWindow(marker) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    var contentString = '<div id="content">'+
+         '<div id="siteNotice">'+
+         '</div>'+
+         '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+         '<div id="bodyContent">'+
+         '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+         'sandstone rock formation in the southern part of the '+
+         'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+         'south west of the nearest large town, Alice Springs; 450&#160;km '+
+         '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+         'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+         'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+         'Aboriginal people of the area. It has many springs, waterholes, '+
+         'rock caves and ancient paintings. Uluru is listed as a World '+
+         'Heritage Site.</p>'+
+         '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+         'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+         '(last visited June 22, 2009).</p>'+
+         '</div>'+
+         '</div>';
 
+    let infowindow = this.infowindow;
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      infowindow.setContent(contentString);
+      infowindow.open(this.map, marker);
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick', function() {
+        infowindow.marker = null;
+      });
+    }
   }
+
 
   geocodeCity() {
       let self = this;
