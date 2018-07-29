@@ -1,0 +1,169 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} */
+
+/* main page */
+html, body { map-containermargin: 0; padding: 0; }
+
+/* #map {
+  height: 400px;
+  background-color: #ccc;
+} */
+
+a {
+  color: #b8b7ad;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #3397db;
+  text-decoration: none;
+}
+
+a img {
+  border: none 0px #fff;
+}
+
+header {
+  width: 100%;
+  background-color: #252831;
+  text-align: center;
+  padding: 30px 10px;
+}
+
+header h1 {
+  margin: auto;
+  color: #fff;
+  font-weight: 200;
+  letter-spacing: 10px;
+  /* font-size: 2rem; */
+  /* font-size: 14pt;
+  font-weight: 200;
+  letter-spacing: 10px; */
+  text-transform: uppercase;
+}
+
+/* header h1 a {
+  color: #fff;
+  font-size: 14pt;
+  font-weight: 200;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+} */
+
+/* nav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+nav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #f1f1f1;
+}
+
+.main-push-toright { margin-Left : 250px }
+.menu-open { width : 250px } */
+
+/* #main {
+    transition: margin-left .5s;
+    padding: 16px;
+} */
+
+/* @media screen and (max-height: 450px) {
+  nav {padding-top: 15px;}
+  nav a {font-size: 18px;}
+} */
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #b8b7ad;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #252831;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  /* padding: 0.8em; */
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
