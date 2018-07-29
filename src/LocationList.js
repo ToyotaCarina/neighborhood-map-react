@@ -15,7 +15,6 @@ class LocationList extends Component {
   }
 
   handleSubmit(event) {
-    // alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
     if (this.props.onFilterPlaces) {
       this.props.onFilterPlaces(this.state.value);
@@ -28,8 +27,13 @@ class LocationList extends Component {
   }
 }
 
+handleClick(marker, event) {
+  event.preventDefault();
+  this.props.onPopulateInfoWindow(marker);
+}
+
   render() {
-    const {places} = this.props;
+    const {places, onPopulateInfoWindow} = this.props;
 
     return (
       <Menu
@@ -42,12 +46,10 @@ class LocationList extends Component {
           <button id="filter-btn" onClick={this.handleSubmit}><i className="fa fa-filter"></i> Filter</button>
         </div>
         {places.filter(place => place.marker.getVisible() === true).map(place => (
-          <a key={place.name} className="menu-item">
+          <a href="javascript:;" key={place.name} className="menu-item" onClick={e => this.handleClick(place.marker, e)} role="button">
             {place.name}
           </a>
         ))}
-
-
       </Menu>
     );
   }

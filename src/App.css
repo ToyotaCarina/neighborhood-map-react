@@ -35,7 +35,7 @@ html, body { map-containermargin: 0; padding: 0; }
   background-color: #ccc;
 } */
 
-/* a {
+a {
   color: #b8b7ad;
   text-decoration: none;
 }
@@ -47,7 +47,7 @@ a:hover, a:focus {
 
 a img {
   border: none 0px #fff;
-} */
+}
 
 header {
   width: 100%;
