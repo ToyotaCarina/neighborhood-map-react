@@ -16,11 +16,13 @@ class App extends Component {
     this.addPlace = this.addPlace.bind(this);
     this.filterPlaces = this.filterPlaces.bind(this);
     this.populateInfoWindow = this.populateInfoWindow.bind(this);
+    this.animateMarker = this.animateMarker.bind(this);
   }
 
 
   state = {
     map: {},
+    // currentMark: {},
     cityName: "Stavanger",
     cityLocation: {},
     places: []
@@ -48,16 +50,39 @@ class App extends Component {
             place.marker.setVisible(false);
         }
     });
-    this.forceUpdate()
+    this.infowindow.close();
+    this.forceUpdate();
 
   }
 
   initMap() {
     // let map;
+    this.mapStyles = [
+      {
+        "featureType": "poi.business",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      }
+    ];
     let service;
     let self = this;
     var requestGeocode = {'address': this.state.cityName};
     this.infowindow = new window.google.maps.InfoWindow({});
+    window.google.maps.event.addListener(this.infowindow,'closeclick',function(){
+      self.animateMarker(); //removes the marker
+    });
     //using tominatim API for geocoding
     let nominatimUrl = "https://nominatim.openstreetmap.org/search?q=" + this.state.cityName +"&format=json";
     fetch(nominatimUrl).then(response => this.geocodeCallback(response));
@@ -77,7 +102,8 @@ class App extends Component {
         console.log(location);
         this.map = new window.google.maps.Map(document.getElementById('map'), {
             zoom: 13,
-            center: location
+            center: location,
+            styles: this.mapStyles
         });
 
         let requestNearestBar = {
@@ -133,9 +159,9 @@ createMarkers(places) {
     if (i < 15) {
       var image = {
         url: place.icon,
-        size: new window.google.maps.Size(71, 71),
-        origin: new window.google.maps.Point(0, 0),
-        anchor: new window.google.maps.Point(17, 34),
+        // size: new window.google.maps.Size(71, 71),
+        // origin: new window.google.maps.Point(0, 0),
+        // anchor: new window.google.maps.Point(17, 34),
         scaledSize: new window.google.maps.Size(25, 25)
       };
 
@@ -145,6 +171,7 @@ createMarkers(places) {
         title: place.name,
         position: place.geometry.location
       });
+      marker.place = place;
       self.addPlace(place, marker);
       console.log(place);
       console.log(marker);
@@ -159,29 +186,51 @@ createMarkers(places) {
   self.map.fitBounds(bounds);
 }
 
+animateMarker(marker) {
+  this.state.places.forEach(place => {
+    place.marker.setAnimation(null);
+  });
+  if (typeof marker !== "undefined") {
+    marker.setAnimation(window.google.maps.Animation.BOUNCE);
+  }
+
+}
+
+
   populateInfoWindow(marker) {
-    console.log(marker);
+    this.animateMarker(marker);
+    // marker.setAnimation(window.google.maps.Animation.BOUNCE);
+    console.log(marker.place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}));
     // Check to make sure the infowindow is not already opened on this marker.
-    var contentString = '<div id="content">'+
-         '<div id="siteNotice">'+
-         '</div>'+
-         '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-         '<div id="bodyContent">'+
-         '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-         'sandstone rock formation in the southern part of the '+
-         'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-         'south west of the nearest large town, Alice Springs; 450&#160;km '+
-         '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-         'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-         'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-         'Aboriginal people of the area. It has many springs, waterholes, '+
-         'rock caves and ancient paintings. Uluru is listed as a World '+
-         'Heritage Site.</p>'+
-         '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-         'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-         '(last visited June 22, 2009).</p>'+
-         '</div>'+
-         '</div>';
+    var place = marker.place;
+    var imgStr = '';
+    if (place.photos[0]) {
+      imgStr = '<img class="card-img-top" src="' + place.photos[0].getUrl({'maxWidth': 286, 'maxHeight': 180})+ '" alt="' + marker.title+ '">"';
+    }
+
+    var adressStr = '<span class="font-weight-bold">Address: </span> ' + place.vicinity ;
+    var ratingStr = '<span class="font-weight-bold">Rating: </span> ' + place.rating;
+    var openedNowStr = '';
+    if (place.opening_hours.open_now) {
+      openedNowStr = '<span class="font-weight-bold">Hours: </span>';
+      if (place.opening_hours.open_now === false) {
+        openedNowStr = openedNowStr + '<span style="color:red">Closed now</span>';
+      } else {
+        openedNowStr = openedNowStr + '<span style="color:green">Open now</span>';
+      }
+    }
+
+         var contentString = `
+         <div class="card" style="width: 18rem;">
+           ` + imgStr +`
+           <div class="card-body">
+             <h5 class="card-title">` + marker.title + `</h5>
+
+             <p class="card-text">` + adressStr+ `</br>`  + ratingStr+ `</br>`  + openedNowStr + `</p>
+             <a href="#" class="btn btn-primary">Go somewhere</a>
+           </div>
+         </div>
+         `;
 
     let infowindow = this.infowindow;
     if (infowindow.marker != marker) {
@@ -221,8 +270,9 @@ createMarkers(places) {
 
   render() {
     const style = {
-    width: '100vw',
-    height: '100vh'
+    width: '100%',
+    height: '90vh',
+    // 'padding-top': '40px'
   }
 
     return (

@@ -46,7 +46,7 @@ handleClick(marker, event) {
           <button id="filter-btn" onClick={this.handleSubmit}><i className="fa fa-filter"></i> Filter</button>
         </div>
         {places.filter(place => place.marker.getVisible() === true).map(place => (
-          <a href="javascript:;" key={place.name} className="menu-item" onClick={e => this.handleClick(place.marker, e)} role="button">
+          <a href="javascript:;" tabIndex="0" key={place.name} className="menu-item" onClick={e => this.handleClick(place.marker, e)} role="button">
             {place.name}
           </a>
         ))}
