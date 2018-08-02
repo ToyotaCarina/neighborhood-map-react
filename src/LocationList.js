@@ -34,6 +34,7 @@ class LocationList extends Component {
   render() {
     const { markers } = this.props;
     return (
+      <div tabIndex="0">
       <Menu
         isOpen
         noOverlay
@@ -44,6 +45,7 @@ class LocationList extends Component {
           <input
             id="places-filter"
             type="text"
+            aria-label="Filter list of bars"
             placeholder="Bar name"
             value={this.state.value}
             onChange={this.handleChange}
@@ -66,6 +68,7 @@ class LocationList extends Component {
           </a>
         ))}
       </Menu>
+      </div>
     );
   }
 }

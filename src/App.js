@@ -9,7 +9,7 @@ class App extends Component {
     super();
     // change credientials with yours
     this.clientIDFoursquare =
-      "IUNHX2L1TOYTE0MRSXQS2JYC5YKJQQSIS4YIBAFONGVLJBGN";
+     "IUNHX2L1TOYTE0MRSXQS2JYC5YKJQQSIS4YIBAFONGVLJBGN";
     this.clientSecretFoursquare =
       "YHYV4N52MD5TJKQWPNDRQAXSBD4TVLOLK1BYQISEHXMOA5NE";
     this.initMap = this.initMap.bind(this);
@@ -31,6 +31,7 @@ class App extends Component {
 
   componentDidMount() {
     window.initMap = this.initMap;
+    window.gm_authFailure = this.gm_authFailure;
     loadJS(
       "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD0MMgs8WPQip9ftHRDeONPJxH8ZgjzYgs&callback=initMap"
     );
@@ -93,6 +94,10 @@ class App extends Component {
     geocoder.geocode(requestGeocode, this.geocodeCallback.bind(this));
   }
 
+  gm_authFailure() {
+    window.alert("Authentication to Google Maps API failed"); // here you define your authentication failed message
+  };
+
   geocodeCallback(results, status) {
     let self = this;
     if (status === "OK") {
@@ -119,7 +124,7 @@ class App extends Component {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       this.createMarkers(results);
     } else {
-      alert("Can not geocode city name to coordinates");
+      alert("Can not retreive Bar data");
     }
   }
 
@@ -155,6 +160,9 @@ class App extends Component {
   }
 
   getFourSquareData(place, cityName) {
+    // Since data I retrieve from Foursquare API is additional data,
+    // if request fails, infowindow will show text error
+    // user doesnt have to get an alert.
     var url =
       "https://api.foursquare.com/v2/venues/search?v=20180323 " +
       "&client_id=" +
@@ -167,16 +175,17 @@ class App extends Component {
       place.name +
       "&limit=1";
     url = encodeURI(url);
+    console.log(url);
     fetch(url)
       .then(response => this.foursquareCallback(response, place))
       .catch(error => {
-        place.foursquare = { error: "Can not load data from Foursqare" };
+        place.foursquare = { error: "Foursquare API error: " + error };
       });
   }
 
   foursquareCallback(response, place) {
     if (response.status !== 200) {
-      place.foursquare = { error: "Can not load data from Foursqare API" };
+      place.foursquare = { error: "Foursquare API error: " + response.status };
     } else {
       response.json().then(info => {
         if (
@@ -226,11 +235,19 @@ class App extends Component {
           openedNowStr + '<span style="color:green">Open now</span>';
       }
     }
-    var foursquareInfo = "";
-    if (place.foursquare && place.foursquare.placeSummary) {
-      foursquareInfo =
-        '<span class="font-weight-bold">Here now: </span>' +
-        place.foursquare.placeSummary;
+    var foursquareInfo = '';
+    if (place.foursquare) {
+      if (place.foursquare.placeSummary) {
+        foursquareInfo =
+          '<span class="font-weight-bold">Here now: </span>' +
+          place.foursquare.placeSummary;
+      }
+      else if (place.foursquare.error) {
+        foursquareInfo =
+          '<small>' +
+          'Could not retreive additional data from Foursquare</br>'+
+          place.foursquare.error + '</small>';
+      }
     }
 
     var contentString =
@@ -292,7 +309,11 @@ function loadJS(src) {
   var script = window.document.createElement("script");
   script.src = src;
   script.async = true;
+  script.onerror = function () {
+    alert("Google Maps can not be loaded. Try again later.");
+  };
   ref.parentNode.insertBefore(script, ref);
+
 }
 
 export default App;
