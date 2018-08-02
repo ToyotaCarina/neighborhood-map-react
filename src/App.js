@@ -179,7 +179,6 @@ class App extends Component {
       place.name +
       "&limit=1";
     url = encodeURI(url);
-    console.log(url);
     fetch(url)
       .then(response => this.foursquareCallback(response, place))
       .catch(error => {
