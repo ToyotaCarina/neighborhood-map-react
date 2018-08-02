@@ -15,5 +15,5 @@ To get started developing right away:
 * [Create React App](https://github.com/facebookincubator/create-react-app)
 * [Bootstrap](https://getbootstrap.com/)
 * [react-burger-menu](https://www.npmjs.com/package/react-burger-menu)
-* [Google Maps Platform] (https://cloud.google.com/maps-platform/products/)
-* [Foursqaure API] (https://developer.foursquare.com/)
+* [Google Maps Platform](https://cloud.google.com/maps-platform/products/)
+* [Foursqaure API](https://developer.foursquare.com/)
