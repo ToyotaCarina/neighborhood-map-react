@@ -1,8 +1,8 @@
 # Neighborhood Map (React)
 
 Front-End Web Developer Nanodegree Program. Project 7: Neighborhood Map.
-It's a single page application featuring a map of my neighborhood (Stavanger, Norway). Map includes highlighted locations of some drinking places. Besides Google Maps API, application uses Google Geolocation API to get coordinates of a city, Google Places API to get list of bars near that place and Foursquare API to extract place summary information. 
-If Google API produces error, client will show an alert window. If Foursquare API returns error, infowindow on map with contain a notification text about that. 
+It's a single page application featuring a map of my neighborhood (Stavanger, Norway). Map includes highlighted locations of some drinking places. Besides Google Maps API, application uses Google Geolocation API to get coordinates of a city, Google Places API to get list of bars near that place and Foursquare API to extract place summary information.  
+If Google API produces error, client will show an alert window. If Foursquare API returns error, infowindow on map with contain a notification text about that.  
 Application has an offline mode, provided by React. Service worker is implemented only in the production build.
 
 ## Instructions
