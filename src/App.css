@@ -39,6 +39,7 @@ header h1 {
   width: 140px;
   margin-bottom: 0.6em;
   box-sizing:  content-box;
+  margin-left: 32px;
 }
 
 #filter-btn {
@@ -49,64 +50,60 @@ header h1 {
   padding: 0px 10px;
 }
 
-
-/* Position and sizing of burger button */
-.bm-burger-button {
-  position: fixed;
-  width: 36px;
-  height: 30px;
-  left: 36px;
-  top: 36px;
+#opennav {
+  float:left;
+  background-color: #252831;
+  border: none;
+  color: white;
 }
 
-.bm-burger-button button:focus{
-  background: #000;
+/* Nav */
+
+.closebtn {
+    background: none;
+    border: 0;
+    color: inherit;
+    /* cursor: default; */
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    -webkit-appearance: button; /* for input */
+    -webkit-user-select: none; /* for button */
+       -moz-user-select: none;
+        -ms-user-select: none;
 }
 
-/* Color/shape of burger icon bars */
-.bm-burger-bars {
-  background: #b8b7ad;
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    visibility: hidden;
 }
 
-/* Position and sizing of clickable cross button */
-.bm-cross-button {
-  height: 24px;
-  width: 24px;
+.sidenav a, .sidenav .closebtn {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 1em;
+    color: #818181;
+    display: block;
 }
 
-
-
-/* Color/shape of close button cross */
-.bm-cross {
-  background: #bdc3c7;
+.sidenav a:hover, .sidenav a:focus, .sidenav button:hover, .sidenav button:focus{
+    color: #f1f1f1;
 }
 
-/* General sidebar styles */
-.bm-menu {
-  background: #252831;
-  padding: 2.5em 1.5em 0;
-  font-size: 1.15em;
-}
-
-/* Morph shape necessary with bubble or elastic */
-.bm-morph-shape {
-  fill: #373a47;
-}
-
-/* Wrapper for item list */
-.bm-item-list {
-  color: #b8b7ad;
-}
-
-/* Individual item */
-.bm-item {
-  display: inline-block;
-  font-weight: 100;
-  padding-top: 0.5em;
-  /* margin-top: .4rem; */
-}
-
-/* Styling of overlay */
-.bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
 }

@@ -22,6 +22,9 @@ class App extends Component {
     this.generateInfowindowContent = this.generateInfowindowContent.bind(this);
     this.getFourSquareData = this.getFourSquareData.bind(this);
     this.foursquareCallback = this.foursquareCallback.bind(this);
+    this.openNav = this.openNav.bind(this);
+    this.closeNav = this.closeNav.bind(this);
+    this.toggleNav = this.toggleNav.bind(this);
   }
 
   state = {
@@ -30,6 +33,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    this.openNav( );
     window.initMap = this.initMap;
     window.gm_authFailure = this.gm_authFailure;
     loadJS(
@@ -285,6 +289,34 @@ class App extends Component {
     }
   }
 
+  openNav() {
+    document.getElementById("mySidenav").style.width = "350px";
+    document.getElementById("main").style.marginLeft = "350px";
+    document.getElementById("mySidenav").style.visibility = "visible";
+    setTimeout(function(){ document.getElementById("places-filter").focus(); }, 500);
+  }
+
+  closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("mySidenav").style.visibility = "hidden";
+    var mainLinks = document.getElementById("main").getElementsByTagName("a");
+    for (var i = 0; i < mainLinks.length; i++) {
+      mainLinks[i].removeAttribute('tabindex');
+    }
+  }
+
+  toggleNav() {
+    let self = this;
+    const sidenav = document.querySelector('.sidenav');
+    if (sidenav.style.visibility === "visible") {
+      self.closeNav();
+    }
+    else {
+      self.openNav();
+    }
+  }
+
   render() {
     return (
       <div id="outer-container">
@@ -293,9 +325,10 @@ class App extends Component {
           onPopulateInfoWindow={this.populateInfoWindow}
           onFilterPlaces={this.filterMarkers}
         />
-        <main id="page-wrap">
+        <main id="main">
           <header>
-            <h1>Bars in Stavanger</h1>
+            <button id="opennav" style={{fontSize:'30px', cursor:'pointer'}} onClick={this.toggleNav} aria-label="Navigation Menu" aria-expanded="false">☰</button>
+            <h1 style={{display:'inline'}}>Bars in Stavanger</h1>
           </header>
           <NeighborhoodMap />
         </main>
