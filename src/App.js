@@ -323,6 +323,7 @@ class App extends Component {
           markers={this.state.markers}
           onPopulateInfoWindow={this.populateInfoWindow}
           onFilterPlaces={this.filterMarkers}
+          onCloseNav={this.closeNav}
         />
         <main id="main">
           <header>

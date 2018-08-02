@@ -31,9 +31,10 @@ class LocationList extends Component {
   }
 
   render() {
-    const { markers } = this.props;
+    const { markers, onCloseNav } = this.props;
     return (
         <nav id="mySidenav" className="sidenav" style={{width: "0", visibility: "hidden"}}>
+          <button id="closenav" className="closebtn" onClick={onCloseNav} aria-label="Close Navigation Menu">×</button>
           <div>
             <input
               id="places-filter"
